@@ -21,7 +21,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #SECRET_KEY = '4u1a%do9@1#pwh*-*c1wd!(z6dy_mv6oe@3@)wi1b%pf9^*)mw'
 # Чтение SECRET_KEY из переменной окружения
 import os
-SECRET_KEY = os.environ['SECRET_KEY']
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cg#p$g+j9tax!#a3cup@1$8obt2_+&k3q+pmu)5%asj6yjpkag')
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
@@ -45,7 +44,6 @@ INSTALLED_APPS = [
     'auth_user.apps.AuthUserConfig'
 ]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -56,7 +54,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 ROOT_URLCONF = 'employee_management.urls'
 
 TEMPLATES = [
@@ -133,6 +130,19 @@ DATABASES['default'].update(db_from_env)
 # The absolute path to the directory where collectstatic will collect static files for deployment.
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# Simplified static file serving.
+# Heroku: Update database configuration from $DATABASE_URL.
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.10/howto/static-files/
+
+# The absolute path to the directory where collectstatic will collect static files for deployment.
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# The URL to use when referring to static files (where they will be served from)
+STATIC_URL = '/static/'
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
